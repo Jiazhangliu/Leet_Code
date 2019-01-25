@@ -1,0 +1,29 @@
+https://leetcode.com/problems/container-with-most-water/
+
+
+
+解题重点：
+
+两个指针一左一右， 同步更新最大值， 并且在下一次循环之前移动height值稍小的指针，因为如果移动稍大的指针，总面积只会更小。 
+反之，如果移动小的指针，则有可能创造更大的面积。
+
+
+class Solution {
+    public int maxArea(int[] height) {
+        int max = 0, start = 0, end = height.length-1;
+        
+        while(start < end) {
+            int length = end - start;
+            int h = Math.min(height[start], height[end]);
+            max = Math.max(max, h * length);
+            
+            if(height[start] >= height[end]) {
+                end--;
+            } else {
+                start++;
+            }
+        }
+        
+        return max;
+    }
+}
