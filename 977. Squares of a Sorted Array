@@ -1,0 +1,43 @@
+https://leetcode.com/problems/squares-of-a-sorted-array/
+
+解题重点
+
+两个指针，先找到正负交界点， 然后从中间往两头， 相当于merge two sorted array。
+
+class Solution {
+    public int[] sortedSquares(int[] A) {    
+        int[] result = new int[A.length];
+        int start = 0;
+        // find the index of the first positive number
+        while(start < A.length && A[start] < 0) {
+            start++;
+        }
+        
+        // square it!
+        for(int i = 0; i < A.length; i++) {
+            A[i] = A[i] * A[i];
+        }
+        
+        int start1 = start-1;
+        int resultIndex = 0;
+        
+        // merge two sorted array
+        while(start1 >= 0 && start < A.length) {
+            if(A[start1] < A[start]) {
+                result[resultIndex++] = A[start1--];
+            } else {
+                result[resultIndex++] = A[start++];
+            }
+        }
+        
+        while(start1 >= 0) {
+            result[resultIndex++] = A[start1--];
+        }
+        
+        while(start < A.length) {
+            result[resultIndex++] = A[start++];
+        }
+        
+        return result;
+    }
+}
