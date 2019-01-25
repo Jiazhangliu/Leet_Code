@@ -1,0 +1,46 @@
+https://leetcode.com/problems/trapping-rain-water/
+
+
+
+解题重点：
+
+两个数组一左一右计算index i从左边和从右边的当前最大值。
+
+然后有了这两个数组，就可以遍历并且得到两个数组中小的那个值，代表它最高的界限也就只有这么高。
+
+逐一加到最后的结果即可
+
+记住要减去已给数组的高度 （即楼梯本来的高度）
+
+
+class Solution {
+    public int trap(int[] height) {
+        if(height.length == 0) {
+            return 0;
+        }
+        
+        int[] leftToRight = new int[height.length];
+        int[] rightToLeft = new int[height.length];
+        
+        leftToRight[0] = height[0];
+        for(int i = 1; i < height.length; i++) {
+            leftToRight[i] = Math.max(height[i], leftToRight[i-1]);
+        }
+        
+        rightToLeft[height.length-1] = height[height.length-1];
+        for(int i = height.length-2; i >= 0; i--) {
+            rightToLeft[i] = Math.max(rightToLeft[i+1], height[i]);
+        }
+        
+        int result = 0;
+        for(int i = 0; i < height.length; i++) {
+            int min = Math.min(leftToRight[i], rightToLeft[i]);
+            
+            if(min - height[i] > 0) {
+                result += min -height[i];
+            }
+        }
+        
+        return result;
+    }
+}
