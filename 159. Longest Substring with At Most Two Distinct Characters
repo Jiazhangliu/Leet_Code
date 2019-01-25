@@ -1,0 +1,33 @@
+https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/
+
+similar to: https://leetcode.com/problems/fruit-into-baskets/
+
+解题思路：
+用map来记录index， 如果出现第三个char了，更新一下最大长度，然后移除第一个继续遍历即可
+
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        
+        if(s == null || s.length() == 0) {
+            return 0;
+        }
+        
+        int max = 0, start = 0;
+        
+        for(int i = start; i < s.length(); i++) {
+            map.put(s.charAt(i), i);
+            
+            // encountered the third char
+            if(map.size() > 2) {
+                int lastIndex = Collections.min(map.values());
+                map.remove(s.charAt(lastIndex));
+                start = lastIndex+1;
+            }
+            
+            max = Math.max(max, i - start + 1);
+        }
+        
+        return max;
+    }
+}
