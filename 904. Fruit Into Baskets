@@ -1,0 +1,27 @@
+https://leetcode.com/problems/fruit-into-baskets/
+
+雷同：159. Longest Substring with At Most Two Distinct Characters
+
+class Solution {
+    Map<Integer, Integer> map = new HashMap<>();
+    public int totalFruit(int[] tree) {
+        int max = 0;
+        
+        int start = 0;
+        
+        for(int i = start; i < tree.length; i++) {
+            map.put(tree[i], i);
+            
+            if(map.size() > 2) {
+                int minIndex = Collections.min(map.values());
+                map.remove(tree[minIndex]);
+                start = minIndex + 1;
+            }
+            
+            max = Math.max(max, i - start + 1);
+        }
+        
+        return max;
+    }
+}
+
