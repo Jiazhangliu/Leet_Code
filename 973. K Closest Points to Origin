@@ -1,0 +1,40 @@
+https://leetcode.com/problems/k-closest-points-to-origin/
+
+用一个priority queue of size K,
+然后全部offer进去nlogn时间去sort
+然后把K个按顺序放进结果里就好了
+
+class Solution {
+    static class Point {
+        int x, y;
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+    
+    public int[][] kClosest(int[][] points, int K) {
+        PriorityQueue<Point> pq = new PriorityQueue<>(K, new Comparator<Point>() {
+            public int compare(Point p1, Point p2) {
+                return (p1.x * p1.x + p1.y * p1.y) - (p2.x * p2.x + p2.y * p2.y);
+            }
+        });
+        
+        for(int i = 0; i < points.length; i++) {
+            pq.offer(new Point(points[i][0], points[i][1]));
+        }
+
+        int[][] result = new int[K][2];
+        int[] val;
+
+        for(int i = 0; i < K; i++) {
+            val = new int[2];
+            Point p = pq.poll();
+            val[0] = p.x;
+            val[1] = p.y;
+            result[i] = val;
+        }
+
+        return result;
+    }
+}
