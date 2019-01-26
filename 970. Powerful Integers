@@ -1,0 +1,25 @@
+https://leetcode.com/problems/powerful-integers/
+
+class Solution {
+    public List<Integer> powerfulIntegers(int x, int y, int bound) {
+        List<Integer> result = new LinkedList<Integer>();
+        for(int i = 0; i < bound; i++) {
+            if((int)Math.pow(x, i) > bound) {
+                break;
+            }
+            for(int j = 0; j < bound; j++) {
+                int val = (int)Math.pow(x, i) + (int)Math.pow(y, j);
+                
+                if(val > bound) {
+                    break;
+                } else {
+                    if(!result.contains(val)) {
+                        result.add(val);
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+}
