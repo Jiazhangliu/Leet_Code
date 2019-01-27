@@ -2,7 +2,7 @@ https://leetcode.com/problems/k-closest-points-to-origin/
 
 用一个priority queue of size K,
 然后全部offer进去nlogn时间去sort
-然后把K个按顺序放进结果里就好了
+然后把K个按顺序放进结果里就好了,yeah
 
 class Solution {
     static class Point {
