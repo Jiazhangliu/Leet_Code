@@ -1,0 +1,41 @@
+https://leetcode.com/problems/minimum-cost-for-tickets/
+
+解题思路：
+1. DP！
+2. 看了答案之后， 发现可以直接用两个index来记录周和月的起始点，dp[i] 表示 到第i天最小的花费数额， 更新方法如下：
+三种情况对比：
+ 当天直接买日票 costs[0]
+ 通过weekStart 那一天开始买一张周票 dp[weekStart] + costs[1]
+ 通过monthStart 那一天开始买一张月票 dp[monthStart] + costs[2]
+ 
+ 选出最小的即可。
+ 
+ 相当于用一周和一个月前的最优解 加上新周票 或者月票 在和当天买一张日票比较 选出最小的即可
+ 
+class Solution {
+    public int mincostTickets(int[] days, int[] costs) {
+        int[] dp = new int[days.length+1];
+        dp[0] = 0;
+        
+        int weekStart = 0, monthStart = 0;
+        
+        for(int i = 1; i <= days.length; i++) {
+            // day pass
+            dp[i] = dp[i-1] + costs[0];
+            
+            // update weekStart
+            while(days[i-1] - days[weekStart] >= 7) {
+                weekStart++;
+            }
+            
+            // update monthStart
+            while(days[i-1] - days[monthStart] >= 30) {
+                monthStart++;
+            }
+            
+            dp[i] = Math.min(dp[i], Math.min(dp[weekStart] + costs[1], dp[monthStart] + costs[2]));
+        }
+        
+        return dp[days.length];
+    }
+}
