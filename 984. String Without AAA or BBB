@@ -1,0 +1,43 @@
+https://leetcode.com/problems/string-without-aaa-or-bbb/
+
+解题思路：
+1. 只要A B长度不一样，就用aab或者bba来缩小A B之间的差距
+2. 重复上一步直到A， B长度一样或者其中一个为零
+3. 返回0 － A+B 的substring即可
+
+class Solution {
+    public String strWithout3a3b(int A, int B) {
+        StringBuffer sb = new StringBuffer();
+        
+        int indexA = A, indexB = B;
+        String aab = "aab", bba = "bba";
+        
+        // 只要A != B 并且有a或者b没有用到，就写进结果里
+        while((indexA > 0 || indexB > 0) && indexA != indexB) {
+            if(indexA > indexB) {
+                sb.append(aab);
+                indexA -= 2;
+                indexB--;
+            } else {
+                sb.append(bba);
+                indexA--;
+                indexB -= 2;
+            }
+        }
+        
+        //如果还剩下等量的A，B 就判断ab的相对位置然后放入ab或者ba 
+        while(indexA > 0 && indexB > 0) {
+            if(A > B) {
+                sb.append("ba");
+            } else {
+                sb.append("ab");
+            }
+            
+            indexA--;
+            indexB--;
+        }
+        
+        // 去掉尾端多余的
+        return sb.toString().substring(0, A+B);
+    }
+}
