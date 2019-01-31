@@ -1,0 +1,29 @@
+https://leetcode.com/problems/subarray-sums-divisible-by-k/
+
+解题思路：
+用一个array来记录从0到当前的sum
+然后就可以通过dp[i] - dp[j] (i > j) 来得到subArray的sum
+
+leetcode的fancy答案看不懂，就用了两个loop来遍历
+
+class Solution {
+    public int subarraysDivByK(int[] A, int K) {
+        int[] dp = new int[A.length+1];
+        dp[0] = 0;
+        
+        for(int i = 1; i <= A.length; i++) {
+            dp[i] = dp[i-1] + A[i-1];
+        }
+        
+        int result = 0;
+        for(int j = 0; j < dp.length-1; j++) {
+            for(int i = dp.length-1; i > j; i--) {
+                if((dp[i] - dp[j]) % K == 0) {
+                    result++;
+                }
+            }
+        }
+        
+        return result;
+    }
+}
