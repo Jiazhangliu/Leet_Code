@@ -1,0 +1,48 @@
+https://leetcode.com/problems/interval-list-intersections/
+
+解题思路：
+两个指针，相互比较对应的interval 判断重合点，更新对应指针
+
+
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+class Solution {
+    public Interval[] intervalIntersection(Interval[] A, Interval[] B) {
+        int i = 0, j = 0;
+        
+        List<Interval> result = new LinkedList<>();
+        
+        while(i < A.length && j < B.length) {
+            Interval i1 = A[i];
+            Interval i2 = B[j];
+            
+            int start = Math.max(i1.start, i2.start);
+            int end = Math.min(i1.end, i2.end);
+            
+            if(start <= end) {
+                result.add(new Interval(start, end));
+            }
+            
+            if(i1.end <= i2.end) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+        
+        Interval[] r = new Interval[result.size()];
+        
+        for(int k = 0; k < result.size(); k++) {
+            r[k] = result.get(k);
+        }
+        
+        return r;
+    }
+}
