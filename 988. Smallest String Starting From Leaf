@@ -1,0 +1,43 @@
+https://leetcode.com/problems/smallest-string-starting-from-leaf/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    String shortest = "";
+    String chars = "abcdefghijklmnopqrstuvwxyz";
+    public String smallestFromLeaf(TreeNode root) {
+        StringBuffer sb = new StringBuffer();
+        helper(root, sb);
+        
+        return shortest;
+    }
+    
+    private void helper(TreeNode root, StringBuffer sb) {
+        if(root == null) {
+            return;
+        }
+        
+        if(root.left == null && root.right == null) {
+            sb.insert(0, chars.charAt(root.val));
+            if(shortest.equals("") || shortest.compareTo(sb.toString()) > 0) {
+                shortest = sb.toString();
+            } 
+            sb.deleteCharAt(0);
+            return;
+        }
+        
+        sb.insert(0, chars.charAt(root.val));
+        
+        helper(root.left, sb);
+        helper(root.right, sb);
+        
+        sb.deleteCharAt(0);
+    }
+}
