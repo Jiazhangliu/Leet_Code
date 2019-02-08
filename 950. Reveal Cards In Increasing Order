@@ -1,0 +1,29 @@
+https://leetcode.com/problems/reveal-cards-in-increasing-order/
+
+解题思路：
+1. 模拟这个rules，每次跳过奇数的index放到queue最后，然后偶数处理完了就回来处理奇数
+[17,13,11,2,3,5,7] -> [2,13,3,11,5,17,7]
+
+class Solution {
+    public int[] deckRevealedIncreasing(int[] deck) {
+        LinkedList<Integer> indexList = new LinkedList<>();
+        for(int i = 0; i < deck.length; i++) {
+            indexList.add(i);
+        }
+        
+        int[] results = new int[deck.length];
+        
+        Arrays.sort(deck);
+        
+        for(int d : deck) {
+            int index = indexList.removeFirst();
+            results[index] = d;
+            
+            if(indexList.size() > 0) {
+                indexList.add(indexList.removeFirst());   
+            }
+        }
+        
+        return results;
+    }
+}
