@@ -1,0 +1,27 @@
+https://leetcode.com/problems/check-if-word-is-valid-after-substitutions/
+
+class Solution {
+    public boolean isValid(String S) {
+        if(S == null || S.length() < 3) {
+            return false;
+        }
+        
+        String replacedStr = new String(S);
+
+        while(replacedStr.length() >= 3) {
+            String str = replacedStr.replaceAll("abc", "");
+            
+            if(str.length() == 0) {
+                return true;
+            }
+            
+            if(str.equals(replacedStr)) {
+                return false;
+            }
+            
+            replacedStr = new String(str);
+        }
+        
+        return replacedStr.length() == 0;
+    }
+}
