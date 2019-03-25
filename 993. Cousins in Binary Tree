@@ -1,0 +1,51 @@
+https://leetcode.com/problems/cousins-in-binary-tree/
+
+记住要交换x y再检查一遍。 不然有可能y在左 x在右
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isCousins(TreeNode root, int x, int y) {
+        return isCousins(root, x, y, 1) || isCousins(root, y, x, 1);
+    }
+    
+    public boolean isCousins(TreeNode root, int x, int y, int level) {
+        int left = contains(root.left, x);
+        int right = contains(root.right, y);
+        
+        if(left < 0 && right < 0) {
+            return false;
+        }
+        
+        if(left < 0 && right > 0) {
+            return isCousins(root.right, x, y, 1);
+        }
+        
+        if(left > 0 && right < 0) {
+            return isCousins(root.left, x, y, 1);
+        }
+        
+        return left == right && left != level;
+    }
+    
+    private int contains(TreeNode root, int val) {
+        if(root == null) {
+            return Integer.MIN_VALUE;
+        }
+        
+        if(root.val == val) {
+            return 1;
+        }
+        
+        return 1 + Math.max(contains(root.left, val), contains(root.right, val));
+    }
+}
