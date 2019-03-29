@@ -1,0 +1,37 @@
+https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/
+
+class Solution {
+    public int shipWithinDays(int[] weights, int D) {
+        int min = 0, max = 0, minLoad = 0;
+        
+        for(int w : weights) {
+            min = Math.max(min, w);
+            max += w;
+        }
+        
+        while(min < max) {
+            minLoad = (min + max) / 2;
+            int days = 1;
+            int sum = 0;
+            for(int w : weights) {
+                if(sum + w > minLoad) {
+                    days++;
+                    sum = 0;
+                }
+                
+                sum += w;
+            }
+            
+            if(days > D) {
+                min = minLoad+1;
+            } else {
+                max = minLoad;
+            }
+        }
+        
+        
+        
+        return min;
+    }
+    
+}
