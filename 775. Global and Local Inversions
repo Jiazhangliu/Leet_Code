@@ -1,0 +1,40 @@
+https://leetcode.com/problems/global-and-local-inversions/
+
+class Solution {
+    public boolean isIdealPermutation(int[] A) {
+        return getLocalInversions(A) == getGlobalInversions(A);
+    }
+    
+    private int getLocalInversions(int[] A) {
+        int result = 0;
+        for(int i = 0; i < A.length-1; i++) {
+            if(A[i] > A[i+1]) {
+                result++;
+            }
+        }
+        
+        return result;
+    }
+    
+    private int getGlobalInversions(int[] A) {
+        int result = 0;
+        
+        int max = 0;
+        
+        for(int i : A) {
+            max = Math.max(i, max);
+        }
+        
+        int[] dp = new int[max+1];
+        
+        for(int i = A.length-1; i >= 0; i--) {
+            int val = A[i];
+            dp[val]++;
+            for(int j = 0; j < val; j++) {
+                result += dp[j];
+            }
+        }
+        
+        return result;
+    }
+}
