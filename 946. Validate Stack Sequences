@@ -1,0 +1,23 @@
+https://leetcode.com/problems/validate-stack-sequences/
+
+解题思路：
+都说了是stack 就用stack来解，先push，如果popped里有它就pop
+最后看index是否处理完了popped
+
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Stack<Integer> stack = new Stack<>();
+        
+        int j = 0;
+        for(int i = 0; i < pushed.length; i++) {
+            stack.push(pushed[i]);
+            
+            while(j < popped.length && !stack.isEmpty() && stack.peek() == popped[j]) {
+                stack.pop();
+                j++;
+            }
+        }
+        
+        return j == popped.length;
+    }
+}
