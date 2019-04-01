@@ -1,0 +1,24 @@
+https://leetcode.com/problems/binary-prefix-divisible-by-5/
+
+import java.math.*;
+
+class Solution {
+    public List<Boolean> prefixesDivBy5(int[] A) {
+        List<Boolean> result = new LinkedList<>();
+        if(A.length == 0) {
+            return result;
+        }
+        
+        BigInteger product = new BigInteger("0");
+        BigInteger five = new BigInteger("5");
+        BigInteger zero = new BigInteger("0");
+        BigInteger two = new BigInteger("2");
+        
+        for(int i = 0; i < A.length; i++) {
+            product = product.multiply(two).add(new BigInteger(String.valueOf(A[i])));
+            result.add(product.mod(five).equals(zero));
+        }
+        
+        return result;
+    }
+}
