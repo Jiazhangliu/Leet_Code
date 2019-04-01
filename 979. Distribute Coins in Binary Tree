@@ -1,0 +1,36 @@
+https://leetcode.com/problems/distribute-coins-in-binary-tree/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int distributeCoins(TreeNode root) {
+        int[] result = new int[1];
+        
+        helper(root, result);
+        
+        return result[0];
+    }
+    
+    private int helper(TreeNode root, int[] result) {
+        if(root == null) {
+            return 0;
+        }
+        
+        int left = helper(root.left, result);
+        int right = helper(root.right, result);
+        
+        // this is how much move moves it requres
+        result[0] += Math.abs(left) + Math.abs(right);
+        
+        // excluding the coin at root, this is how much more coins it exceeds/requires
+        return root.val + left + right - 1;
+    }
+        
+}
