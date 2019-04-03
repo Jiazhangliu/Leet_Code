@@ -1,0 +1,30 @@
+https://leetcode.com/problems/single-element-in-a-sorted-array/
+
+屌屌屌！！
+用变形的binary search
+start = 0，  end = length\2；
+这样子的话就可以binary search一半的array，然后通过x2来找到后面的数值
+
+然后只要mid*2 ！= mid*2+1， 就代表mid*2有问题！
+因为如果相等，代表左边成对的数据都没问题，因为index为偶数！！
+
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        if(nums == null || nums.length == 0) {
+            return 0;
+        }
+        
+        int start = 0, end = nums.length/2;
+        while(start < end) {
+            int mid = start + (end - start)/2;
+            
+            if(nums[mid*2] != nums[mid*2+1]) {
+                end--;
+            } else {
+                start++;
+            }
+        }
+        
+        return nums[start*2];
+    }
+}
