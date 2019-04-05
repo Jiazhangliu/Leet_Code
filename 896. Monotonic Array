@@ -1,0 +1,30 @@
+https://leetcode.com/problems/monotonic-array/
+
+class Solution {
+    public boolean isMonotonic(int[] A) {
+        boolean increasing = true;
+        
+        int val1 = A[0], val2 = A[A.length-1];
+        
+        if(val1 > val2) {
+            increasing = false;
+        }
+        
+        long curr = increasing ? Long.MIN_VALUE : Long.MAX_VALUE;
+        for(int i = 0; i < A.length; i++) {
+            if(increasing) {
+                if(A[i] < curr) {
+                    return false;    
+                }
+                curr = A[i];
+            } else {
+                if(A[i] > curr) {
+                    return false;
+                }
+                curr = A[i];
+            }
+        }
+        
+        return true;
+    }
+}
