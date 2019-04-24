@@ -1,0 +1,87 @@
+https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/
+
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+
+    public Node() {}
+
+    public Node(int _val,Node _left,Node _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+
+class Solution {
+    
+    class Pair<T, V> {
+        T min;
+        V max;
+        public Pair(T min, V max) {
+            this.min = min;
+            this.max = max;
+        }
+        
+        public T getKey() { 
+            return min;
+        }
+        public V getVal() {
+            return max;
+        }
+        public void setKey(T key) { 
+            this.min = key;
+        }
+        public void setVal(V val) {
+            this.max = val;
+        }
+    }
+    
+    public Node treeToDoublyList(Node root) {
+        if(root == null) {
+            return root;
+        }
+        Pair<Node,Node> pair = dfs(root);
+
+        Node head = pair.getKey();
+        Node tail = pair.getVal();
+        connect(tail, head);  
+        
+        return head;
+    }
+    
+    private Pair<Node,Node> dfs(Node root) {
+        if(root == null) {
+            return new Pair<Node, Node>(null, null);
+        }
+        
+        if(root.left == null && root.right == null) {
+            return new Pair<Node, Node>(root, root);
+        }
+        
+        Pair<Node,Node> left = dfs(root.left);
+        Pair<Node,Node> right = dfs(root.right);
+        
+        Node lkey = left.getKey();
+        Node lval = left.getVal();
+        Node rkey = right.getKey();
+        Node rval = right.getVal();
+
+        connect(lval, root);
+        connect(root, rkey);
+        
+        return new Pair<Node, Node>((lkey == null ? root: lkey), (rval == null ? root : rval));
+    }
+    
+    private void connect(Node n1, Node n2) {
+        if(n1 == null || n2 == null) {
+            return;
+        }
+        n1.right = n2;
+        n2.left = n1;
+    }
+}
