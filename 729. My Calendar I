@@ -1,0 +1,30 @@
+https://leetcode.com/problems/my-calendar-i/
+
+解题思路：
+使用TreeMap找到floorKey还有ceilingKey
+然后判断是否在中间插入即可
+
+class MyCalendar {
+    TreeMap<Integer, Integer> calendar;
+    
+    public MyCalendar() {
+        calendar = new TreeMap<>();
+    }
+    
+    public boolean book(int start, int end) {
+        Integer prevStart = calendar.floorKey(start);
+        Integer nextStart = calendar.ceilingKey(start);
+        
+        if((prevStart == null || calendar.get(prevStart) <= start) && (nextStart == null || nextStart >= end)) {
+            calendar.put(start, end);
+            return true;
+        }
+        return false;
+    }
+}
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar obj = new MyCalendar();
+ * boolean param_1 = obj.book(start,end);
+ */
