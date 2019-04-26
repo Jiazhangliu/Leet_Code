@@ -1,0 +1,39 @@
+https://leetcode.com/problems/valid-mountain-array/
+
+class Solution {
+    public boolean validMountainArray(int[] A) {
+        if(A.length <= 2) {
+            return false;
+        }
+        
+        boolean up = true;
+        boolean u = false;
+        boolean down = false;
+        
+        int i = 1;
+        while(i < A.length) {
+            int pre = A[i-1];
+            int cur = A[i];
+            if(pre == cur) {
+                return false;
+            }
+            
+            if(pre < cur) {
+                u = true;
+                if(!up) 
+                    return false;
+            }
+            
+            if(pre > cur) {
+                if(up) {
+                    up = false;
+                    down = true;
+                }
+            }
+            
+            i++;
+        }
+        
+        return u == true && down == true;
+    }
+}
