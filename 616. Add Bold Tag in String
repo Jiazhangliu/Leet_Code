@@ -1,0 +1,101 @@
+https://leetcode.com/problems/add-bold-tag-in-string/
+
+解题思路：
+
+用merge interval的思路， 找到所有dict word在s的index， 加到interval里 然后去merge
+
+最后的就是结果
+
+Ref： https://leetcode.com/problems/add-bold-tag-in-string/discuss/104263/Java-solution-Same-as-Merge-Interval.
+
+
+class Solution {
+    public String addBoldTag(String s, String[] dict) {
+        if(s == null || s.length() == 0) {
+            return s;
+        }
+        
+        List<Interval> list = new LinkedList<>();
+        
+        for (String str : dict) {
+        //从-1开始搜索 如果后面一直有，就一直加到interval
+        	int index = -1;
+        	index = s.indexOf(str, index);
+        	while (index != -1) {
+        		list.add(new Interval(index, index + str.length()));
+        		index +=1;
+        		index = s.indexOf(str, index);
+        	}
+        }
+        
+        // 得到merge好的list
+        List<Interval> result = merge(list);
+        
+        StringBuffer sb = new StringBuffer();
+        int prev = 0;
+        // 不再dict里的加merge的加。。。。
+        for(int i = 0; i < result.size(); i++) {
+            Interval itv = result.get(i);
+            if(itv.start > prev) {
+                sb.append(s.substring(prev, itv.start));
+            }
+            sb.append("<b>" + s.substring(itv.start, itv.end) + "</b>");
+            prev = itv.end;
+        }
+        
+        if(prev < s.length()) {
+            sb.append(s.substring(prev));
+        }
+        
+        return sb.toString();
+    }
+    
+    class Interval {
+        int start;
+        int end;
+        Interval() { start = 0; end = 0; }
+        Interval(int s, int e) { start = s; end = e; }
+        
+        public String toString() {
+            return "[" + start + "->" + end + "]";
+        }
+    }
+    
+    public List<Interval> merge(List<Interval> intervals) {
+        List<Interval> results = new LinkedList<>();
+        
+        Collections.sort(intervals, new Comparator<Interval>() {
+            public int compare(Interval i1, Interval i2) {
+                return i1.start - i2.start;
+            }
+        });
+        
+        if(intervals == null || intervals.size() <= 1) {
+            return intervals;
+        }
+
+        Stack<Interval> stack = new Stack<Interval>();
+        
+        for(Interval i : intervals) {
+            if(stack.isEmpty()) {
+                stack.push(i);
+            } else {
+                Interval i1 = stack.pop();
+                
+                if(i1.end >= i.start) {
+                    i1 = new Interval(Math.min(i.start, i1.start), Math.max(i1.end, i.end));
+                    stack.push(i1);
+                } else {
+                    stack.push(i);
+                    results.add(i1);
+                }
+            }
+        }
+        
+        while(!stack.isEmpty()) {
+            results.add(stack.pop());
+        }
+        
+        return results;
+    }
+}
