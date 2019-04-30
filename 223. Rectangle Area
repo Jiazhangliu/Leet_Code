@@ -1,0 +1,25 @@
+https://leetcode.com/problems/rectangle-area/
+
+class Solution {
+    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        int area1 = area(A,B,C,D);
+        int area2 = area(E,F,G,H);
+        int result = area1+area2;
+        if(A >= G || C <= E || B >= H || D <= F) {
+            return result;
+        }
+        
+        int I = Math.max(A,E);
+        int J = Math.min(C,G);
+        int K = Math.max(B,F);
+        int L = Math.min(D,H);
+        
+        int area3 = area(I,K,J,L);
+        
+        return result - area3;
+    }
+    
+    private int area(int A, int B, int C, int D) {
+        return Math.abs((C-A)*(D-B));
+    }
+}
