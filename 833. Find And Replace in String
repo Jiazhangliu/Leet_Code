@@ -1,0 +1,32 @@
+https://leetcode.com/problems/find-and-replace-in-string/
+
+解题思路
+！！！从右往左，避免index变化带来的影响！！！
+
+class Solution {
+    public String findReplaceString(String S, int[] indexes, String[] sources, String[] targets) {
+        List<int[]> array = new LinkedList<>();
+        
+        for(int i = 0; i < indexes.length; i++) { array.add(new int[]{indexes[i], i}); }
+        
+        Collections.sort(array, new Comparator<int[]>() {
+            public int compare(int[] i1, int[] i2) {
+                return i1[0] - i2[0];
+            }
+        });
+        
+        String source = null, target = null;
+        int index = 0;
+        for(int i = array.size()-1; i >= 0 ; i--) {
+            int[] ii = array.get(i);
+            index = ii[0];
+            source = sources[ii[1]];
+            target = targets[ii[1]];
+            
+            if(S.substring(index, index+source.length()).equals(source)) {
+                S = S.substring(0, index) + target + S.substring(index+source.length());
+            }
+        }
+        return S;
+    }
+}
