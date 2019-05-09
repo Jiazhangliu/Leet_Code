@@ -1,0 +1,61 @@
+https://leetcode.com/problems/recover-a-tree-from-preorder-traversal/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ 
+ 解题思路：
+ 用一个stack来存node
+ 读取有多少个‘-’ 来决定是哪一个level 然后用stask pop到这个level
+ 把node和stack的peek连接起来
+ 再把node加进stack去
+ 
+class Solution {
+    public TreeNode recoverFromPreorder(String S) {
+        Stack<TreeNode> s = new Stack<>();
+        
+        int index = 0;
+        while(index < S.length()) {
+            int level = 0;
+            int val = 0;
+            
+            while(S.charAt(index) == '-') {
+                index++;
+                level++;
+            }
+            
+            while(index < S.length() && S.charAt(index) != '-') {
+                val = val * 10 + (S.charAt(index++) - '0');
+            }
+            
+            while(s.size() > level) {
+                s.pop();
+            }
+            
+            if(s.size() == 0) {
+                s.push(new TreeNode(val));
+                continue;
+            }
+            
+            TreeNode n = new TreeNode(val);
+            if(s.peek().left == null) {
+                s.peek().left = n;
+            } else {
+                s.peek().right = n;
+            }
+            s.push(n);
+        }
+        
+        while(s.size() > 1) {
+            s.pop();
+        }
+        
+        return s.pop();
+    }
+}
