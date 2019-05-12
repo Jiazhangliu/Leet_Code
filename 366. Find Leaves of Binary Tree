@@ -1,0 +1,40 @@
+https://leetcode.com/problems/find-leaves-of-binary-tree/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+ 
+ 解题思路：
+ 找到当前node从下往上的最大深度， 这个index就是最后结果的index
+ 
+class Solution {
+    public List<List<Integer>> findLeaves(TreeNode root) {
+        List<List<Integer>> result = new LinkedList<>();
+        
+        helper(root, result);
+        
+        return result;
+    }
+    
+    private int helper(TreeNode root, List<List<Integer>> result) {
+        if(root == null) {
+            return -1;
+        }
+        
+        int height = Math.max(helper(root.left, result), helper(root.right, result)) + 1;
+        
+        if(result.size() == height) {
+            result.add(new LinkedList<Integer>());
+        } 
+        
+        result.get(height).add(root.val);
+        
+        return height;
+    }
+}
