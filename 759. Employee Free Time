@@ -1,0 +1,75 @@
+https://leetcode.com/problems/employee-free-time/
+
+class Solution {
+    public int[][] employeeFreeTime(int[][][] schedule) {
+        List<Interval> list = new ArrayList<>();
+        List<Interval> resultList = new ArrayList<>();
+        for(int[][] s : schedule) {
+            for(int[] ss : s) {
+                list.add(new Interval(ss[0], ss[1]));
+            }
+        }
+        
+        Collections.sort(list, new Comparator<Interval>() {
+            public int compare(Interval i1, Interval i2) {
+                return i1.left - i2.left;
+            }
+        });
+        
+        Stack<Interval> stack = new Stack<>();
+        
+        for(Interval i : list) {
+            if(stack.isEmpty()) {
+                stack.push(i);
+                continue;
+            }
+            
+            Interval itv = stack.pop();
+            
+            if(itv.right < i.left) {
+                resultList.add(itv);
+                stack.push(i);
+            } else {
+                stack.push(new Interval(Math.min(i.left, itv.left), Math.max(i.right, itv.right)));
+            }
+        }
+        
+        while(!stack.isEmpty()) {
+            resultList.add(stack.pop());
+        }
+        
+        list = new LinkedList<>();
+        
+        for(int i = 0; i < resultList.size()-1; i++) {
+            Interval i1 = resultList.get(i);
+            Interval i2 = resultList.get(i+1);
+            
+            if(i1.right < i2.left) {
+                list.add(new Interval(i1.right, i2.left));
+            }
+        }
+        
+        int[][] result = new int[list.size()][2];
+        int index = 0;
+        for(Interval i : list) {
+            result[index][0] = i.left;
+            result[index][1] = i.right;
+            index++;
+        }
+        
+        return result;
+    }
+    
+    static class Interval {
+        int left;
+        int right;
+        public Interval(int left, int right) {
+            this.left = left;
+            this.right = right;
+        }
+        
+        public String toString() {
+            return "[" + left + " " + right + "]";
+        }
+    }
+}
