@@ -1,0 +1,26 @@
+https://leetcode.com/problems/daily-temperatures/
+
+用一个stack来记录index
+从右往左处理，如果stack里peek 小于当前的temp，就pop，一直到找到第一个比他大的index
+活着如果stack里没有了 就是0.
+
+
+class Solution {
+    public int[] dailyTemperatures(int[] T) {
+        int[] result = new int[T.length];
+        Stack<Integer> stack = new Stack<>();
+        
+        for(int i = T.length-1; i >= 0; i--) {
+            int temp = T[i];
+            
+            while(!stack.isEmpty() && T[stack.peek()] <= temp) {
+                stack.pop();
+            }
+            
+            result[i] = stack.isEmpty() ? 0 : stack.peek() - i;
+            stack.push(i);
+        }
+        
+        return result;
+    }
+}
