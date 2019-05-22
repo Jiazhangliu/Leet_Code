@@ -1,0 +1,89 @@
+https://leetcode.com/problems/design-hashmap/
+
+class MyHashMap {
+
+    List<Node>[] map;
+    /** Initialize your data structure here. */
+    public MyHashMap() {
+        map = new LinkedList[100000];
+    }
+    
+    /** value will always be non-negative. */
+    public void put(int key, int value) {
+        int hash = hash(key);
+        
+        Node n = new Node(key, value);
+        
+        List<Node> list = map[hash];
+        if(list == null || list.size() == 0) {
+            list = new LinkedList<Node>();
+            list.add(n);
+            map[hash] = list;
+            return;
+        }
+        
+        for(Node node : list) {
+            if(node.key == key) {
+                node.val = value;
+            }
+        }
+    }
+    
+    /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+    public int get(int key) {
+        int hash = hash(key);
+        List<Node> list = map[hash];
+        
+        if(list == null || list.size() == 0) {
+            return -1;
+        }
+        
+        for(Node n : list) {
+            if(n.key == key) {
+                return n.val;
+            }
+        }
+        
+        return -1;
+    }
+    
+    /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+    public void remove(int key) {
+        int hash = hash(key);
+        
+        List<Node> list = map[hash];
+        
+        if(list == null || list.size() == 0) {
+            return;
+        }
+        
+        for(int i = 0; i < list.size(); i++) {
+            Node n = list.get(i);
+            if(n.key == key) {
+                list.remove(i);
+            }
+        }
+    }
+    
+    private int hash(int key) {
+        return key % 100000;
+    }
+    
+    static class Node {
+        int key;
+        int val;
+        
+        public Node(int key, int val) {
+            this.key = key;
+            this.val = val;
+        }
+    }
+}
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap obj = new MyHashMap();
+ * obj.put(key,value);
+ * int param_2 = obj.get(key);
+ * obj.remove(key);
+ */
