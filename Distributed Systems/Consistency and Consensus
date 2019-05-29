@@ -1,0 +1,19 @@
+Consistency 分为三类
+1. Strong consistency
+2. Soft Consistency
+3. Eventual Consistency
+
+based on CAP (Consistency, availability, partition tolerence)
+满足其中两个的同时必将牺牲第三个
+
+Strong Consistency：
+强一致性，表示多个client request的时候 如果value更改了，clients必须都拿到最新的，达到结果一致性
+
+强一致性算法：paxos/multi paxos， 进阶版： Raft， 多数行原则 达到多数就通过，但是write一定要通过选举产生的master
+https://raft.github.io/
+
+
+
+Eventual Consistency：
+
+
