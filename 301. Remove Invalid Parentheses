@@ -1,0 +1,68 @@
+https://leetcode.com/problems/remove-invalid-parentheses/submissions/
+
+用BFS 然后对每一个String， check如果是valid证明找到了最短的
+如果不是valid，就继续。loop所有queue里的，再loop每一个String， 去掉Parentheses 加入queue
+
+
+class Solution {
+    public List<String> removeInvalidParentheses(String s) {
+        List<String> result = new LinkedList<>();
+        
+        if(s == null || s.length() == 0) {
+            result.add("");
+            return result;
+        }
+        
+        Queue<String> queue = new LinkedList<>();
+        queue.add(s);
+        
+        Set<String> visited = new HashSet<>();
+        Set<String> set = new HashSet<>();
+        
+        while(queue.size() > 0) {
+            boolean found = false;
+            int level = queue.size();
+            for(int i = 0; i < level; i++) {
+                String first = queue.poll();
+                if(visited.contains(first)) continue;
+                if(isValid(first)) {
+                    set.add(first);
+                    found = true;
+                }
+
+                if(!found) {
+                    visited.add(first);
+                    for(int j = 0; j < first.length(); j++) {
+                        if(first.charAt(j) != '(' && first.charAt(j) != ')') {
+                            continue;
+                        }
+                        
+                        queue.add(first.substring(0, j) + first.substring(j+1, first.length()));
+                    }
+                }
+            }
+            if(found) {
+                break;
+            }
+        }
+        
+        result.addAll(set);
+        
+        return result;
+    }
+    
+    private boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for(char c : s.toCharArray()) {
+            if(c == '(') {
+                stack.push(c);
+            } else if ( c == ')') {
+                if(stack.isEmpty()) {
+                    return false;
+                }
+                stack.pop();
+            }
+        }
+        return stack.size() == 0;
+    }
+}
