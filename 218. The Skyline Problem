@@ -1,0 +1,58 @@
+https://leetcode.com/problems/the-skyline-problem/
+
+class Solution {
+    public List<List<Integer>> getSkyline(int[][] buildings) {
+        List<List<Integer>> result = new LinkedList<>();
+        
+        if(buildings.length == 0 || buildings[0].length == 0) {
+            return result;
+        }
+        
+        List<int[]> points = new LinkedList<>();
+        for(int i = 0; i < buildings.length; i++) {
+            int[] building = buildings[i];
+            // negative height means start point
+            points.add(new int[]{building[0], -1*building[2]});
+            points.add(new int[]{building[1], building[2]});
+        }
+        
+        Collections.sort(points, new Comparator<int[]>() {
+            public int compare(int[] i1, int[] i2) {
+                if(i1[0] != i2[0]) {
+                    return i1[0] - i2[0];
+                } else {
+                    return i1[1] - i2[1];
+                }
+            }
+        });
+
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        map.put(0, 1);
+        
+        int max = 0;
+        for(int[] point : points) {
+            int height = point[1];
+            // if height < 0 meaning its a start point
+            if(height < 0) {
+                map.put(-1*height, map.getOrDefault(-1*height, 0) + 1);
+            } else {
+                // for endpoint, remove count of this height by 1
+                map.put(height, map.getOrDefault(height, 0) - 1);
+                if(map.get(height) == 0) {
+                    map.remove(height);
+                }
+            }
+            
+            int curMax = map.lastKey();
+            if(curMax != max) {
+                List<Integer> temp = new LinkedList<>();
+                temp.add(point[0]);
+                temp.add(curMax);
+                result.add(temp);
+                max = curMax;
+            }
+        }
+        
+        return result;
+    }
+}
