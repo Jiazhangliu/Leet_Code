@@ -1,0 +1,55 @@
+https://leetcode.com/problems/car-pooling/
+
+class Solution {
+    public boolean carPooling(int[][] trips, int capacity) {
+        List<Interval> list = new LinkedList<>();
+        for(int[] trip : trips) {
+            list.add(new Interval(trip[1], trip[0]));
+            list.add(new Interval(-1*trip[2], trip[0]));
+        }
+        
+        Collections.sort(list, new Comparator<Interval>() {
+            public int compare(Interval i1, Interval i2) {
+                int index1 = Math.abs(i1.index);
+                int index2 = Math.abs(i2.index);
+                if(index1 != index2)
+                    return index1 - index2;
+                else {
+                    if(i1.index+i2.index == 0) {
+                        if(i1.index < 0) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    } else {
+                        return i1.count - i2.count;
+                    }
+                }
+            }
+        });
+        
+        int total = 0;
+        for(Interval i : list) {
+            if(i.index >= 0) {
+                total += i.count;
+                if(total > capacity) {
+                    return false;
+                }
+            } else {
+                total -= i.count;
+            }
+        }
+        
+        return true;
+    }
+    
+    public static class Interval {
+        int index;
+        int count;
+        
+        public Interval(int index, int count) {
+            this.index = index;
+            this.count = count;
+        }
+    }
+}
