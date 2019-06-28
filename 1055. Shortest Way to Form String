@@ -1,0 +1,24 @@
+https://leetcode.com/problems/shortest-way-to-form-string/
+
+class Solution {
+    public int shortestWay(String source, String target) {
+        int tStart = 0;
+        int count = 0;
+
+        while(tStart < target.length()) {
+            int t = tStart;
+            count++;
+            for(int j = 0; j < source.length(); j++) {
+                if(tStart < target.length() && target.charAt(tStart) == source.charAt(j)) {
+                    tStart++;
+                }
+            }
+            
+            if(t == tStart) {
+                return -1;
+            }
+        }
+        
+        return count;
+    }
+}
