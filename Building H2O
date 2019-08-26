@@ -1,0 +1,34 @@
+https://leetcode.com/problems/building-h2o/discuss/362912/Java-solution-based-on-Atomics
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+class H2O {
+
+    private AtomicInteger hydrogen;
+    private AtomicInteger oxygen;
+    
+    public H2O() {
+        hydrogen = new AtomicInteger(0);
+        oxygen = new AtomicInteger(0);
+    }
+
+    public void hydrogen(Runnable releaseHydrogen) throws InterruptedException {
+		while(hydrogen.get() >= 2) {
+            Thread.yield();
+        }
+        
+        // releaseHydrogen.run() outputs "H". Do not change or remove this line.
+        releaseHydrogen.run();
+        hydrogen.getAndIncrement();
+    }
+
+    public void oxygen(Runnable releaseOxygen) throws InterruptedException { 
+        while(hydrogen.get() != 2) {
+            Thread.yield();
+        }
+        
+        // releaseOxygen.run() outputs "O". Do not change or remove this line.
+        releaseOxygen.run();
+        hydrogen.set(0);
+    }
+}
